@@ -37,32 +37,32 @@ async def create_event(request: Request):
                 'Bottom': bottom
             })
 
-        if event_bodies is None:
+        if len(event_bodies) > 0:
             sendEvent = Event(
-            EventHeader={
-                'UserId': userId,
-                'CameraId': cameraId,
-                'Created': created,
-                'Path': path,
-                'IsRequiredObjectDetection': False
-            },
-            EventBodies=None
+                EventHeader={
+                    'UserId': userId,
+                    'CameraId': cameraId,
+                    'Created': created,
+                    'Path': path,
+                    'IsRequiredObjectDetection': False
+                },
+                EventBodies=event_bodies
             )
-        else :
+        else:
             sendEvent = Event(
-            EventHeader={
-                'UserId': userId,
-                'CameraId': cameraId,
-                'Created': created,
-                'Path': path,
-                'IsRequiredObjectDetection': False
-            },
-            EventBodies=event_bodies,
+                EventHeader={
+                    'UserId': userId,
+                    'CameraId': cameraId,
+                    'Created': created,
+                    'Path': path,
+                    'IsRequiredObjectDetection': False
+                }
             )
 
         image.close()
         event_dict = sendEvent.dict()
         response = JSONResponse(content=event_dict)
+        logging.info(f"event__: {sendEvent}")
         logging.info(f"event: {event_dict}")
         return response
     
