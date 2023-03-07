@@ -37,16 +37,28 @@ async def create_event(request: Request):
                 'Bottom': bottom
             })
 
-        sendEvent = Event(
-        EventHeader={
-            'UserId': userId,
-            'CameraId': cameraId,
-            'Created': created,
-            'Path': path,
-            'IsRequiredObjectDetection': False
-        },
-        EventBodies=event_bodies,
-        )
+        if event_bodies is None:
+            sendEvent = Event(
+            EventHeader={
+                'UserId': userId,
+                'CameraId': cameraId,
+                'Created': created,
+                'Path': path,
+                'IsRequiredObjectDetection': False
+            },
+            EventBodies=None
+            )
+        else :
+            sendEvent = Event(
+            EventHeader={
+                'UserId': userId,
+                'CameraId': cameraId,
+                'Created': created,
+                'Path': path,
+                'IsRequiredObjectDetection': True
+            },
+            EventBodies=event_bodies,
+            )
 
         image.close()
         event_dict = sendEvent.dict()
