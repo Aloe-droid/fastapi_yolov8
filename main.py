@@ -10,14 +10,17 @@ from typing import Dict, Any
 app = FastAPI() 
 
 @app.post("/api/event/events")
-async def create_event(request_body: Dict[str, Any]):
-    try:
-        event = Event(**request_body)
-        if event.EventHeader is None:
-             raise HTTPException(status_code=422, detail="EventHeader is required")
-    except ValidationError as e:
-        raise HTTPException(status_code=422, detail=str(e))  
+async def create_event(event: Event):
+    # try:
+    #     event = Event(**request_body)
+    #     if event.EventHeader is None:
+    #          raise HTTPException(status_code=422, detail="EventHeader is required")
+    # except ValidationError as e:
+    #     raise HTTPException(status_code=422, detail=str(e))  
      
+    if event.EventHeader is None:
+        raise HTTPException(status_code=422, detail="EventHeader is required")
+    
     model = YOLO("yolov8l.pt")
 
     try:
