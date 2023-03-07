@@ -26,6 +26,9 @@ async def create_event(request: Request):
         results = model.predict(image)
 
         event_bodies = []
+        #result의 타입을 확인해보자 
+        logging.info(f"result type: {type(results)}")
+
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
                 left, top, right, bottom = bbox.tolist()
@@ -36,30 +39,17 @@ async def create_event(request: Request):
                 'Right': right,
                 'Bottom': bottom
             })
-            
-        logging.info("과연 여기는 실행되는가?")
 
-        if len(event_bodies) > 0:
-            sendEvent = Event(
-                EventHeader={
-                    'UserId': userId,
-                    'CameraId': cameraId,
-                    'Created': created,
-                    'Path': path,
-                    'IsRequiredObjectDetection': False
-                },
-                EventBodies=event_bodies
-            )
-        else:
-            sendEvent = Event(
-                EventHeader={
-                    'UserId': userId,
-                    'CameraId': cameraId,
-                    'Created': created,
-                    'Path': path,
-                    'IsRequiredObjectDetection': False
-                }
-            )
+        sendEvent = Event(
+            EventHeader={
+                'UserId': userId,
+                'CameraId': cameraId,
+                'Created': created,
+                'Path': path,
+                'IsRequiredObjectDetection': False
+            },
+            EventBodies=event_bodies,
+        )
 
         image.close()
         event_dict = sendEvent.dict()
