@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from serializers import Event
@@ -50,7 +50,7 @@ async def create_event(request: Request):
         event_dict = _Event.dict()
         return  JSONResponse(content=event_dict)
     except Exception as e:
-        return JSONResponse(status_code=500, content={"message": str(e)})
+        return Response(status_code=500, content=str(e))
 
 
 if __name__ == "__main__":
