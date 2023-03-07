@@ -7,7 +7,7 @@ from PIL import Image
 
 app = FastAPI() 
 
-@app.post("/api/event/events")
+@app.post("/api/event/events/")
 async def create_event(request: Request):
     event = await request.json()
     if event['EventHeader'] is None:
@@ -56,4 +56,4 @@ async def create_event(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=8888)
+    uvicorn.run(app, host="localhost", port=8000)
