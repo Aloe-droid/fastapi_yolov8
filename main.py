@@ -41,7 +41,7 @@ async def create_event(request_body: Dict[str, Any]):
                 'Bottom': bottom
             })
 
-        Event = {
+        _Event = {
             'EventHeader': {
                 'UserId': userId,
                 'CameraId': cameraId,
@@ -53,7 +53,7 @@ async def create_event(request_body: Dict[str, Any]):
         }
 
         image.close()
-        event_dict = Event.dict()
+        event_dict = _Event.dict()
         return event_dict
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
