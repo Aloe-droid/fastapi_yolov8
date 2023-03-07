@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from serializers import Event
@@ -48,7 +48,9 @@ async def create_event(request: Request):
 
         image.close()
         event_dict = _Event.dict()
-        return Response(content=_Event, media_type="application/json", status_code=200)
+        response = JSONResponse(content=event_dict)
+        print(response)
+        return response
     except Exception as e:
         return HTTPException(status_code=500, detail=str(e))
 
