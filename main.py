@@ -48,7 +48,7 @@ async def create_event(request: Request):
 
         image.close()
         event_dict = _Event.dict()
-        return  Response(content=event_dict, media_type="application/json", status_code=200)
+        return Response(content=_Event, media_type="application/json", status_code=200)
     except Exception as e:
         return HTTPException(status_code=500, detail=str(e))
 
