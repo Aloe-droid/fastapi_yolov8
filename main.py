@@ -24,7 +24,7 @@ async def create_event(request: Request):
         image = Image.open(path)
 
         results = model.predict(image)
-
+        logging.info(f"_____results: {results}")
         event_bodies = []
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
@@ -59,7 +59,6 @@ async def create_event(request: Request):
                 }
             )
 
-        logging.info(f"event__: {sendEvent}")
         image.close()
         event_dict = sendEvent.dict()
         response = JSONResponse(content=event_dict)
