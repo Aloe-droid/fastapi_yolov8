@@ -7,9 +7,9 @@ from PIL import Image
 app = FastAPI() 
 
 @app.post("/api/event/events")
-async def create_event(event: Event, response_model=Event):
+async def create_event(event: Event):
     if event.EventHeader is None:
-        return {"error": "EventHeader is required"}
+        raise HTTPException(status_code=500, detail="EventHeader is None")
     
     model = YOLO("yolov8l.pt")
 
