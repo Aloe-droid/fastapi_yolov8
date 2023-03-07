@@ -55,7 +55,7 @@ async def create_event(request: Request):
                 'CameraId': cameraId,
                 'Created': created,
                 'Path': path,
-                'IsRequiredObjectDetection': True
+                'IsRequiredObjectDetection': False
             },
             EventBodies=event_bodies,
             )
