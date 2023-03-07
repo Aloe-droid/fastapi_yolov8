@@ -30,13 +30,13 @@ async def create_event(request: Request):
     for result in results:
         for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
             left, top, right, bottom = bbox.tolist()
-        event_bodies.append({
+            event_bodies.append({
             'Label': cls.item(),
             'Left': left,
             'Top': top,
             'Right': right,
             'Bottom': bottom
-        })
+            })
 
     sendEvent = Event(
         EventHeader={
