@@ -36,10 +36,8 @@ async def create_event(request: Request):
                 'Right': right,
                 'Bottom': bottom
             })
-    except Exception as e:
-        return HTTPException(status_code=500, detail=str(e))
 
-    sendEvent = Event(
+        sendEvent = Event(
         EventHeader={
             'UserId': userId,
             'CameraId': cameraId,
@@ -47,15 +45,17 @@ async def create_event(request: Request):
             'Path': path,
             'IsRequiredObjectDetection': False
         },
-        EventBodies=event_bodies
-    )
+        EventBodies=event_bodies,
+        )
 
-    image.close()
-    event_dict = sendEvent.dict()
-    response = JSONResponse(content=event_dict)
-    logging.info(f"event: {event_dict}")
-    logging.info(f"response: {response}")
-    return response
+        image.close()
+        event_dict = sendEvent.dict()
+        response = JSONResponse(content=event_dict)
+        logging.info(f"event: {event_dict}")
+        return response
+    
+    except Exception as e:
+        return HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
