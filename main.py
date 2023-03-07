@@ -16,49 +16,45 @@ async def create_event(request: Request):
         raise HTTPException(status_code=422, detail="EventHeader is required")
     
     model = YOLO("yolov8l.pt")
-    try:
-        userId = event['EventHeader']['UserId']
-        cameraId = event['EventHeader']['CameraId']
-        created = event['EventHeader']['Created']
-        path = event['EventHeader']['Path']
-        image = Image.open(path)
 
-        results = model.predict(image)
+    userId = event['EventHeader']['UserId']
+    cameraId = event['EventHeader']['CameraId']
+    created = event['EventHeader']['Created']
+    path = event['EventHeader']['Path']
+    image = Image.open(path)
 
-        event_bodies = []
-        #result가 없는 경우 처리
-        logging.info(f"___results: {results[0].size}")
+    results = model.predict(image)
 
-        for result in results:
-            for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
-                left, top, right, bottom = bbox.tolist()
-            event_bodies.append({
-                'Label': cls.item(),
-                'Left': left,
-                'Top': top,
-                'Right': right,
-                'Bottom': bottom
-            })
+    event_bodies = []
+    #result가 없는 경우 처리
+    for result in results:
+        for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
+            left, top, right, bottom = bbox.tolist()
+        event_bodies.append({
+            'Label': cls.item(),
+            'Left': left,
+            'Top': top,
+            'Right': right,
+            'Bottom': bottom
+        })
 
-        sendEvent = Event(
-            EventHeader={
-                'UserId': userId,
-                'CameraId': cameraId,
-                'Created': created,
-                'Path': path,
-                'IsRequiredObjectDetection': False
-            },
-            EventBodies=event_bodies,
-        )
+    sendEvent = Event(
+        EventHeader={
+            'UserId': userId,
+            'CameraId': cameraId,
+            'Created': created,
+            'Path': path,
+            'IsRequiredObjectDetection': False
+        },
+        EventBodies=event_bodies,
+    )
 
-        image.close()
-        event_dict = sendEvent.dict()
-        response = JSONResponse(content=event_dict)
-        logging.info(f"event: {event_dict}")
-        return response
-    
-    except Exception as e:
-        return HTTPException(status_code=500, detail=str(e))
+    image.close()
+    event_dict = sendEvent.dict()
+    response = JSONResponse(content=event_dict)
+    logging.info(f"event: {event_dict}")
+    return response
+
 
 if __name__ == "__main__":
     import uvicorn
