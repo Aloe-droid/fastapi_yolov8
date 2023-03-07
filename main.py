@@ -27,8 +27,7 @@ async def create_event(request: Request):
 
         event_bodies = []
         #result가 없는 경우 처리
-        if len(results) == 0:
-            logging.info("result is empty")
+        logging.info(f"___results: {type(results[0])}")
 
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
