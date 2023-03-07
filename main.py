@@ -81,17 +81,17 @@ async def create_event(request: Request):
                 'Bottom': bottom
             })
 
-        _Event = {
-            'EventHeader': {
+        _Event = Event(
+            EventHeader={
                 'UserId': userId,
                 'CameraId': cameraId,
                 'Created': created,
                 'Path': path,
                 'IsRequiredObjectDetection': False
             },
-            'EventBodies': event_bodies,
-        }
-
+            EventBodies=event_bodies,
+        )
+        
         image.close()
         event_dict = _Event.dict()
         return  JSONResponse(content=event_dict)
