@@ -27,7 +27,7 @@ async def create_event(request: Request):
 
         event_bodies = []
         #result가 없는 경우 처리
-        logging.info(f"___results: {results[0].boxes}")
+        logging.info(f"___results: {results[0].size}")
 
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
