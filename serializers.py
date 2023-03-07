@@ -1,18 +1,18 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 class EventHeader(BaseModel):
-    Id: int
+    Id: Optional[int]
     UserId: str
     CameraId: int
     Created: str
     Path: str
     IsRequiredObjectDetection: bool
-    EventVideoId: int
+    EventVideoId: Optional[int]
 
 class EventBody(BaseModel):
-    Id: int
-    EventHeaderId: int
+    Id: Optional[int]
+    EventHeaderId: Optional[int]
     Label: int
     Left: int
     Top: int

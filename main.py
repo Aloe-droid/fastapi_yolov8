@@ -3,9 +3,6 @@ from fastapi.exceptions import HTTPException
 from serializers import Event
 from ultralytics import YOLO
 from PIL import Image
-from pydantic import ValidationError
-from typing import Dict, Any
-
 
 app = FastAPI() 
 
