@@ -24,7 +24,7 @@ async def create_event(request: Request):
         image = Image.open(path)
 
         results = model.predict(image)
-        logging.info(f"_____results: {results}")
+
         event_bodies = []
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
@@ -36,6 +36,8 @@ async def create_event(request: Request):
                 'Right': right,
                 'Bottom': bottom
             })
+            
+        logging.info("과연 여기는 실행되는가?")
 
         if len(event_bodies) > 0:
             sendEvent = Event(
