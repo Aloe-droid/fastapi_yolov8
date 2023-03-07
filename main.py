@@ -26,8 +26,9 @@ async def create_event(request: Request):
         results = model.predict(image)
 
         event_bodies = []
-        #result의 타입을 확인해보자 
-        logging.info(f"result type: {type(results)}")
+        #result는 2차원 list 형태로 나옴 첫번째의 갯수가 몇개의 object가 detect되었는지
+        logging.info(f"results: {results[0]}") 
+        
 
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
