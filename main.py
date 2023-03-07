@@ -26,9 +26,9 @@ async def create_event(request: Request):
         results = model.predict(image)
 
         event_bodies = []
-        #result는 2차원 list 형태로 나옴 첫번째의 갯수가 몇개의 object가 detect되었는지
-        logging.info(f"results: {results[0]}") 
-        
+        #result가 없는 경우 처리
+        if len(results) == 0:
+            logging.info("result is empty")
 
         for result in results:
             for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
