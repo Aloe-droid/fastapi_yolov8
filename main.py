@@ -9,22 +9,7 @@ from PIL import Image
 app = FastAPI() 
 
 @app.post("/api/event/events")
-
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
-    error_response = jsonable_encoder({"detail": exc.detail})
-    app.logger.error(error_response)
-    return JSONResponse(content=error_response, status_code=exc.status_code)
-
-
 async def create_event(event: Event):
-    # try:
-    #     event = Event(**request_body)
-    #     if event.EventHeader is None:
-    #          raise HTTPException(status_code=422, detail="EventHeader is required")
-    # except ValidationError as e:
-    #     raise HTTPException(status_code=422, detail=str(e))  
-     
     if event.EventHeader is None:
         raise HTTPException(status_code=422, detail="EventHeader is required")
     
@@ -64,7 +49,7 @@ async def create_event(event: Event):
 
         image.close()
         event_dict = _Event.dict()
-        return event_dict
+        return  JSONResponse(content=event_dict)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
