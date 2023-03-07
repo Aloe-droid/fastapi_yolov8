@@ -34,9 +34,6 @@ async def create_event(event: Event):
                 'Bottom': bottom
             })
 
-        event.EventHeader.IsRequiredObjectDetection = False
-        event.EventBodies = event_bodies
-
         Event = {
             'EventHeader': {
                 'UserId': userId,
