@@ -14,6 +14,9 @@ async def create_event(event: Event):
     model = YOLO("yolov8l.pt")
 
     try:
+        userId = event.EventHeader.UserId
+        cameraId = event.EventHeader.CameraId
+        created = event.EventHeader.Created
         path = event.EventHeader.Path
         image = Image.open(path)
 
@@ -34,9 +37,19 @@ async def create_event(event: Event):
         event.EventHeader.IsRequiredObjectDetection = False
         event.EventBodies = event_bodies
 
-        image.close()
+        Event = {
+            'EventHeader': {
+                'UserId': userId,
+                'CameraId': cameraId,
+                'Created': created,
+                'Path': path,
+                'IsRequiredObjectDetection': False
+            },
+            'EventBodies': event_bodies,
+        }
 
-        event_dict = event.dict()
+        image.close()
+        event_dict = Event.dict()
         return event_dict
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
