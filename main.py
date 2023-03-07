@@ -6,6 +6,7 @@ from ultralytics import YOLO
 from PIL import Image
 import logging
 
+logging.basicConfig(level=logging.INFO)
 app = FastAPI() 
 
 @app.post("/api/event/events/")
