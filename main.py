@@ -3,14 +3,21 @@ from fastapi.exceptions import HTTPException
 from serializers import Event
 from ultralytics import YOLO
 from PIL import Image
+from pydantic import ValidationError
+from typing import Dict, Any
+
 
 app = FastAPI() 
 
 @app.post("/api/event/events")
-async def create_event(event: Event):
-    if event.EventHeader is None:
-        raise HTTPException(status_code=500, detail="EventHeader is None")
-    
+async def create_event(request_body: Dict[str, Any]):
+    try:
+        event = Event(**request_body)
+        if event.EventHeader is None:
+             raise HTTPException(status_code=422, detail="EventHeader is required")
+    except ValidationError as e:
+        raise HTTPException(status_code=422, detail=str(e))  
+     
     model = YOLO("yolov8l.pt")
 
     try:
