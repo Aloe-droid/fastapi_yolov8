@@ -59,10 +59,10 @@ async def create_event(request: Request):
                 }
             )
 
+        logging.info(f"event__: {sendEvent}")
         image.close()
         event_dict = sendEvent.dict()
         response = JSONResponse(content=event_dict)
-        logging.info(f"event__: {sendEvent}")
         logging.info(f"event: {event_dict}")
         return response
     
