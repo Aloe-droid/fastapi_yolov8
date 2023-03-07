@@ -37,7 +37,7 @@ async def create_event(request: Request):
                 'Bottom': bottom
             })
         
-        _Event = Event(
+        sendEvent = Event(
             EventHeader={
                 'UserId': userId,
                 'CameraId': cameraId,
@@ -49,8 +49,9 @@ async def create_event(request: Request):
         )
 
         image.close()
-        event_dict = _Event.dict()
+        event_dict = sendEvent.dict()
         response = JSONResponse(content=event_dict)
+        logging.info(f"event: {event_dict}")
         logging.info(f"response: {response}")
         return response
     except Exception as e:
