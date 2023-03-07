@@ -35,6 +35,8 @@ async def create_event(request: Request):
                 'Bottom': bottom
             })
 
+        _eventBodies = event_bodies if event_bodies else None
+        
         _Event = Event(
             EventHeader={
                 'UserId': userId,
@@ -43,7 +45,7 @@ async def create_event(request: Request):
                 'Path': path,
                 'IsRequiredObjectDetection': False
             },
-            EventBodies=event_bodies,
+            EventBodies=_eventBodies,
         )
 
         image.close()
