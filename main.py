@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from serializers import Event
 from ultralytics import YOLO
 from PIL import Image
+import logging
 
 app = FastAPI() 
 
@@ -49,7 +50,7 @@ async def create_event(request: Request):
         image.close()
         event_dict = _Event.dict()
         response = JSONResponse(content=event_dict)
-        print(response)
+        logging.info(f"response: {response}")
         return response
     except Exception as e:
         return HTTPException(status_code=500, detail=str(e))
