@@ -22,4 +22,4 @@ class EventBody(BaseModel):
 class Event(BaseModel):
     EventHeader: EventHeader
     EventBodies: List[EventBody]
-    Error: str
+    Error: Optional[str]
