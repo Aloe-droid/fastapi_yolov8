@@ -67,7 +67,7 @@ def create_event(event: Event, response: Response):
             })
 
     return {
-        'EventDTO': {
+        'Event': {
             'EventHeader': {
                 'UserId': user_id,
                 'CameraId': camera_id,
