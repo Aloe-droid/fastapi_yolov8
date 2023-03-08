@@ -62,10 +62,10 @@ def create_event(event: Event, response: Response):
             left, top, right, bottom = bbox.tolist()
             event_bodies.append({
                 'Label': 'fire' if cls.item() == 0 else 'smoke',
-                'Left': left,
-                'Top': top,
-                'Right': right,
-                'Bottom': bottom
+                'Left': int(left),
+                'Top': int(top),
+                'Right': int(right),
+                'Bottom': int(bottom)
             })
 
     event.EventHeader.IsRequiredObjectDetection = False
