@@ -7,7 +7,7 @@ from PIL import Image
 # logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(debug=False)
-model = YOLO("yolov8l.pt")
+model = YOLO("fireLargeV8.pt")
 
 @app.post("/api/event/events/")
 async def create_event(request: Request):
