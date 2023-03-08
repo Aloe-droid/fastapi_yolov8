@@ -70,5 +70,8 @@ def create_event(event: Event, response: Response):
 
     event.EventHeader.IsRequiredObjectDetection = False
     event.EventBodies = event_bodies
+    event_dict = {
+        'Event': event.dict()
+    }
 
-    return event
+    return JSONResponse(content=event_dict)
