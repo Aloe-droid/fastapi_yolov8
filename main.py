@@ -6,7 +6,7 @@ from PIL import Image
 # import logging
 # logging.basicConfig(level=logging.INFO)
 
-app = FastAPI() 
+app = FastAPI(debug=False) 
 
 @app.post("/api/event/events/")
 async def create_event(request: Request):
@@ -14,7 +14,7 @@ async def create_event(request: Request):
     if event['EventHeader'] is None:
         return JSONResponse(status_code=400, content={"Error": "EventHeader is required."})
     
-    model = YOLO("yolov8l.pt")
+    model = YOLO("fireLargeV8.pt")
 
     userId = event['EventHeader']['UserId']
     cameraId = event['EventHeader']['CameraId']
