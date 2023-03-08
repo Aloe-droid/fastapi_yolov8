@@ -61,7 +61,7 @@ def create_event(event: Event, response: Response):
         for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
             left, top, right, bottom = bbox.tolist()
             event_bodies.append({
-                'Label': cls.item(),
+                'Label': 'fire' if cls.item() == 0 else 'smoke',
                 'Left': left,
                 'Top': top,
                 'Right': right,
