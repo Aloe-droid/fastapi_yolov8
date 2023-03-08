@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from serializers import Event
 from ultralytics import YOLO
@@ -11,7 +11,7 @@ model = YOLO("fireLargeV8.pt")
 
 @app.post("/api/event/events/")
 async def create_event(event: Event):
-    
+
     userId = event.EventHeader.UserId
     cameraId = event.EventHeader.CameraId
     created = event.EventHeader.Created
