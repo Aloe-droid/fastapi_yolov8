@@ -1,5 +1,6 @@
 from typing import Optional, List
 from fastapi import APIRouter, Response, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from ultralytics import YOLO
 from PIL import Image
@@ -10,7 +11,7 @@ router = APIRouter(
     tags=['event']
 )
 
-model = YOLO("fireLargeV8.pt")
+model = YOLO("yolov8l.pt")
 
 
 class EventHeader(BaseModel):
@@ -18,6 +19,7 @@ class EventHeader(BaseModel):
     CameraId: int
     Created: str
     Path: str
+    IsRequiredObjectDetection: bool
 
 
 class EventBody(BaseModel):
@@ -66,15 +68,7 @@ def create_event(event: Event, response: Response):
                 'Bottom': bottom
             })
 
-    return {
-        'Event': {
-            'EventHeader': {
-                'UserId': user_id,
-                'CameraId': camera_id,
-                'Created': created,
-                'Path': path,
-                'IsRequiredObjectDetection': False
-            },
-            'EventBodies': event_bodies
-        }
-    }
+    event.EventHeader.IsRequiredObjectDetection = False
+    event.EventBodies = event_bodies
+
+    return event
