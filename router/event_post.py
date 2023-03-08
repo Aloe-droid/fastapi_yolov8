@@ -68,7 +68,15 @@ def create_event(event: Event, response: Response):
                 'Bottom': int(bottom)
             })
 
-    event.EventHeader.IsRequiredObjectDetection = False
-    event.EventBodies = event_bodies
+    send_event = Event(
+        EventHeader={
+            'UserId': user_id,
+            'CameraId': camera_id,
+            'Created': created,
+            'Path': path,
+            'IsRequiredObjectDetection': False
+        },
+        EventBodies=event_bodies
+    ).dict()
 
-    return JSONResponse(content=event.dict())
+    return JSONResponse(content=send_event)
