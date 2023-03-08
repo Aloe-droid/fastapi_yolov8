@@ -21,7 +21,7 @@ class EventHeader(BaseModel):
 
 
 class EventBody(BaseModel):
-    Label: int
+    Label: str
     Left: int
     Top: int
     Right: int
