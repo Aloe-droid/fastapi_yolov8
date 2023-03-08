@@ -6,20 +6,23 @@ from PIL import Image
 # import logging
 # logging.basicConfig(level=logging.INFO)
 
-app = FastAPI(debug=False) 
+app = FastAPI(debug=False)
+model = YOLO("yolov8l.pt")
 
 @app.post("/api/event/events/")
-def create_event(request: Request):
-    event = request.json()
-    if event['EventHeader'] is None:
-        return JSONResponse(status_code=400, content={"Error": "EventHeader is required."})
-    
-    model = YOLO("fireLargeV8.pt")
+async def create_event(request: Request):
+    try:
+        event_header = request.data['EventHeader']
+    except KeyError:
+        return JSONResponse(status_code=400, content={'Error': 'EventHeader key not found.'})
 
-    userId = event['EventHeader']['UserId']
-    cameraId = event['EventHeader']['CameraId']
-    created = event['EventHeader']['Created']
-    path = event['EventHeader']['Path']
+    try:
+        userId = event_header['UserId']
+        cameraId = event_header['CameraId']
+        created = event_header['Created']
+        path = event_header['Path']
+    except KeyError:
+        return JSONResponse(status_code=400, content={'Error': 'UserId, CameraId, Created, or Path key not found in EventHeader.'})
 
     try:
         image = Image.open(path)
