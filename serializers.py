@@ -17,4 +17,4 @@ class EventBody(BaseModel):
 
 class Event(BaseModel):
     EventHeader: EventHeader
-    EventBodies: List[EventBody]
+    EventBodies: Optional[List[EventBody]]
