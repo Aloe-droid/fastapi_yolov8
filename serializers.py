@@ -9,7 +9,7 @@ class EventHeader(BaseModel):
     IsRequiredObjectDetection: bool
 
 class EventBody(BaseModel):
-    Label: int
+    Label: str
     Left: int
     Top: int
     Right: int
