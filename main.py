@@ -9,8 +9,8 @@ from PIL import Image
 app = FastAPI(debug=False) 
 
 @app.post("/api/event/events/")
-async def create_event(request: Request):
-    event = await request.json()
+def create_event(request: Request):
+    event = request.json()
     if event['EventHeader'] is None:
         return JSONResponse(status_code=400, content={"Error": "EventHeader is required."})
     
