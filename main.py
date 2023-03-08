@@ -1,19 +1,18 @@
 from fastapi import FastAPI, Request
-from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from serializers import Event
 from ultralytics import YOLO
 from PIL import Image
-import logging
+# import logging
+# logging.basicConfig(level=logging.INFO)
 
-logging.basicConfig(level=logging.INFO)
 app = FastAPI() 
 
 @app.post("/api/event/events/")
 async def create_event(request: Request):
     event = await request.json()
     if event['EventHeader'] is None:
-        raise HTTPException(status_code=422, detail="EventHeader is required")
+        return JSONResponse(status_code=400, content={"Error": "EventHeader is required."})
     
     model = YOLO("yolov8l.pt")
 
@@ -21,12 +20,15 @@ async def create_event(request: Request):
     cameraId = event['EventHeader']['CameraId']
     created = event['EventHeader']['Created']
     path = event['EventHeader']['Path']
-    image = Image.open(path)
+
+    try:
+        image = Image.open(path)
+    except:
+        return JSONResponse(status_code=404, content={"Error": "File not found."})
 
     results = model.predict(image)
 
     event_bodies = []
-    #result가 없는 경우 처리
     for result in results:
         for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
             left, top, right, bottom = bbox.tolist()
@@ -51,9 +53,7 @@ async def create_event(request: Request):
 
     image.close()
     event_dict = sendEvent.dict()
-    response = JSONResponse(content=event_dict)
-    logging.info(f"event: {event_dict}")
-    return response
+    return JSONResponse(content=event_dict)
 
 
 if __name__ == "__main__":
