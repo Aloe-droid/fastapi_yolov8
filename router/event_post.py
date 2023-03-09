@@ -61,7 +61,7 @@ def create_event(event: Event, response: Response):
         for bbox, cls in zip(result.boxes.xyxy, result.boxes.cls):
             left, top, right, bottom = bbox.tolist()
             event_bodies.append({
-                'Label': cls.item(),
+                'Label': int(cls.item()),
                 'Left': left,
                 'Top': top,
                 'Right': right,
@@ -69,14 +69,14 @@ def create_event(event: Event, response: Response):
             })
 
     send_event = Event(
-        EventHeader={
+        EventHeader = {
             'UserId': user_id,
             'CameraId': camera_id,
             'Created': created,
             'Path': path,
             'IsRequiredObjectDetection': False
         },
-        EventBodies=event_bodies
+        EventBodies = event_bodies
     ).dict()
 
     return JSONResponse(content=send_event)
