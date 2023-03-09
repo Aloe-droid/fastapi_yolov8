@@ -36,11 +36,11 @@ class Event(BaseModel):
 
 
 @router.post('/create', status_code=status.HTTP_200_OK)
-def create_event(event: Event, response: Response):
-    user_id = event.EventHeader.UserId
-    camera_id = event.EventHeader.CameraId
-    created = event.EventHeader.Created
-    path = event.EventHeader.Path
+def create_event(header: EventHeader, response: Response):
+    user_id = header.UserId
+    camera_id = header.CameraId
+    created = header.Created
+    path = header.Path
 
     try:
         image = Image.open(path)
